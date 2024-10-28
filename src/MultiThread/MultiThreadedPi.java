@@ -22,11 +22,13 @@ public class MultiThreadedPi {
             if (distance <= 1) {
                 pointsInCircle++;
             }
-            double pi = pointsInCircle / (double) totalPoints * 4;
-            Instant finish = Instant.now();
-            long timeElapsed = Duration.between(start, finish).toMillis();
-            System.out.println("pi=" + pi);
-            System.out.println("runtime=" + timeElapsed);
         }
+        double pi = pointsInCircle / (double) totalPoints * 4;
+        Instant finish = Instant.now();
+        long timeElapsed = Duration.between(start, finish).toMillis();
+        es.shutdown();
+        System.out.println("pi=" + pi);
+        System.out.println("runtime=" + timeElapsed);
+
     }
 }
