@@ -7,11 +7,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MultiThreadedPi {
-    private static final long totalPoints = 10_000_000;
+    private static final long totalPoints = 1_000_000;
 
     private final static int THREADS = 4;
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         ExecutorService es = Executors.newFixedThreadPool(THREADS);
         Instant start = Instant.now();
         long pointsInCircle = 0;
@@ -29,6 +29,5 @@ public class MultiThreadedPi {
         es.shutdown();
         System.out.println("pi=" + pi);
         System.out.println("runtime=" + timeElapsed);
-
     }
 }
