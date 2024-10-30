@@ -2,32 +2,38 @@ package MultiThread;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
 public class MultiThreadedPi {
     private static final long totalPoints = 1_000_000;
 
     private final static int THREADS = 4;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        List<Future<Long>> futureList = new ArrayList<>();
         ExecutorService es = Executors.newFixedThreadPool(THREADS);
         Instant start = Instant.now();
-        long pointsInCircle = 0;
-        for (long i = 0; i < totalPoints; i++) {
-            double x = ThreadLocalRandom.current().nextDouble(0, 2);
-            double y = ThreadLocalRandom.current().nextDouble(0, 2);
-            double distance = Math.sqrt((x - 1) * (x - 1) + (y - 1) * (y - 1));
-            if (distance <= 1) {
-                pointsInCircle++;
-            }
+        long i = totalPoints;
+        for(int j=0; j<THREADS; i=totalPoints/THREADS*j,j++){
+            Callable<Long> task = new MultiThreadTask(i, totalPoints/THREADS*j);
+            Future<Long> result = es.submit(task);
+            futureList.add(result);
         }
-        double pi = pointsInCircle / (double) totalPoints * 4;
+
+        Callable<Long> lastTask = new MultiThreadTask(i, totalPoints);
+        Future<Long> lastResult = es.submit(lastTask);
+        futureList.add(lastResult);
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start, finish).toMillis();
         es.shutdown();
-        System.out.println("pi=" + pi);
+
+        long sum=0;
+        for(Future<Long> f : futureList){
+            sum = sum + f.get();
+        }
+        System.out.println("pi=" + sum);
         System.out.println("runtime=" + timeElapsed);
     }
 }
