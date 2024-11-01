@@ -5,9 +5,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MultiThreadTask implements Callable<Long> {
     private long totalPoints;
-    private long pi;
 
-    public MultiThreadTask(long totalPoints, long pi){
+    public MultiThreadTask(long totalPoints){
         this.totalPoints = totalPoints;
 
     }
