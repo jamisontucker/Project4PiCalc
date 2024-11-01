@@ -11,7 +11,7 @@ public class MultiThreadedPi {
 
     private final static int THREADS = 4;
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws Exception {
         List<Future<Long>> futureList = new ArrayList<>();
         ExecutorService es = Executors.newFixedThreadPool(THREADS);
         Instant start = Instant.now();
@@ -21,19 +21,18 @@ public class MultiThreadedPi {
             Future<Long> result = es.submit(task);
             futureList.add(result);
         }
-
+        long sum=0;
+        for(Future<Long> f : futureList){
+            sum = sum + f.get();
+        }
+        double pi = sum / (double) totalPoints * 4;
         Callable<Long> lastTask = new MultiThreadTask(i, totalPoints);
         Future<Long> lastResult = es.submit(lastTask);
         futureList.add(lastResult);
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start, finish).toMillis();
         es.shutdown();
-
-        long sum=0;
-        for(Future<Long> f : futureList){
-            sum = sum + f.get();
-        }
-        System.out.println("pi=" + sum);
+        System.out.println("pi=" + pi);
         System.out.println("runtime=" + timeElapsed);
     }
 }

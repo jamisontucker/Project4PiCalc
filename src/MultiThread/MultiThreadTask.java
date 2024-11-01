@@ -11,6 +11,7 @@ public class MultiThreadTask implements Callable<Long> {
         this.totalPoints = totalPoints;
 
     }
+
     public Long call(){
         long pointsInCircle = 0;
         for (long i = 0; i < totalPoints; i++) {
@@ -20,8 +21,7 @@ public class MultiThreadTask implements Callable<Long> {
             if (distance <= 1) {
                 pointsInCircle++;
             }
-            double pi = pointsInCircle / (double) totalPoints * 4;
-        }return pi;
+        }return pointsInCircle;
 
     }
 
