@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class MultiThreadedPi {
-    private static final long totalPoints = 1_000_000;
+    private static final long totalPoints = 2_000_000_000;
 
     private final static int THREADS = 4;
 
@@ -15,7 +15,6 @@ public class MultiThreadedPi {
         Instant start = Instant.now();
         List<Future<Long>> futureList = new ArrayList<>();
         ExecutorService es = Executors.newFixedThreadPool(THREADS);
-        long i = totalPoints;
         for(int j=0; j<THREADS; j++){
             Callable<Long> task = new MultiThreadTask(totalPoints/THREADS);
             Future<Long> result = es.submit(task);

@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SingleThreadedPi {
-    private static final long totalPoints = 1_000_000;
+    private static final long totalPoints = 2_000_000_000;
 
     public static void main(String[] args){
         Instant start = Instant.now();
